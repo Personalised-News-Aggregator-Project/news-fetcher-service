@@ -21,17 +21,16 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 
-# --- Stage 2: The Final Runtime Environment ---
-# This stage creates the final, small container that will actually be deployed.
-# It uses a "slim" image with only Java 17, making it efficient.
+# --- Stage 2: Create the final, lightweight image ---
+# Use the official lightweight Java image
 FROM eclipse-temurin:17-jre-focal
 
 # Set the working directory
 WORKDIR /app
 
-# Copy ONLY the .jar file created in the 'build' stage into this final container.
-# This keeps the final image small and secure.
-COPY --from=build /app/target/*.jar app.jar
+# --- THIS IS THE CORRECTED LINE ---
+# We are now using the exact filename from the build logs instead of a wildcard.
+COPY --from=build /app/target/newsAggregator-0.0.1-SNAPSHOT.jar app.jar
 
 # This command tells Render how to start your application.
 ENTRYPOINT ["java", "-jar", "/app.jar"]
