@@ -6,12 +6,14 @@ RUN mvn clean package -DskipTests
 
 # Stage 2: Create the final image
 FROM eclipse-temurin:17-jre-focal
-
-# Set the working directory
 WORKDIR /app
 
-# Copy the application JAR
+# Copy the JAR file and the new entrypoint script
 COPY --from=build /app/target/newsAggregator-0.0.1-SNAPSHOT.jar app.jar
+COPY entrypoint.sh .
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Make the script executable
+RUN chmod +x entrypoint.sh
+
+# Set the entrypoint to our new script
+ENTRYPOINT ["./entrypoint.sh"]
