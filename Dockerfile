@@ -10,10 +10,10 @@ WORKDIR /app
 
 # Copy the JAR file and the new entrypoint script
 COPY --from=build /app/target/newsAggregator-0.0.1-SNAPSHOT.jar app.jar
-COPY entrypoint.sh .
+COPY entryPoint.sh .
 
 # Make the script executable
-RUN chmod +x entrypoint.sh
+RUN chmod +x entryPoint.sh
 
 # Set the entrypoint to our new script
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["./entryPoint.sh"]
